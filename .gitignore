@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+*.pyd
+*.exp
+
+# Ninja
+*.ninja_deps
+*.ninja_log
+*.ninja
+
