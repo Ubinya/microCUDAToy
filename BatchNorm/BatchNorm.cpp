@@ -25,8 +25,11 @@ at::Tensor BNLauncher(const at::Tensor& src,
 
   at::Tensor dst = at::empty({batch, 2 * channels, height, width},    // 开辟一段存储空间
                              src.options());
-  const int input_size = batch * channels * height * width;
-  const int output_size = batch * channels * height * width;
+  
+  N = scr.size[0];
+  numBlocks = (N + BLOCK_SIZE - 1) / BLOCK_SIZE;
+  float *d_output;
+  cudaMalloc((void**)&d_output, numBlocks * sizeof(float));
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(src.scalar_type(), "BNLauncher", ([&] {
         const scalar_t *src_ = src.data<scalar_t>();
         scalar_t *dst_ = dst.data<scalar_t>();
@@ -37,9 +40,17 @@ at::Tensor BNLauncher(const at::Tensor& src,
                input_size, channels, height, width, src_, dst_
             );
       }));
+  float mean = sumArray(min)
   THCudaCheck(cudaGetLastError());
+  cudaFree(d_output);
   return dst;
 }
+
+void sumArray(const float *input, float *output) {
+
+    kernel_parallel_summing<<<numBlocks, BLOCK_SIZE>>>(d_input, d_output);
+}
+
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("myBatchNorm", &f_batch_norm, "my batch norm");
