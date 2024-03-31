@@ -14,7 +14,8 @@ setup(
     ext_modules=[
         CUDAExtension(
         	name='mybatchnorm',
-        	sources=['BatchNorm.cu'],
+        	sources=['BatchNorm_kernel.cu',
+                     'BatchNorm.cpp'],
         	extra_compile_args={'cxx':['-std=c++17', '-ffast-math'],'nvcc':['-std=c++17']})],
         cmdclass={'build_ext':BuildExtension}
 	)
