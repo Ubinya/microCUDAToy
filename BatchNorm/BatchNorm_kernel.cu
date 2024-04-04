@@ -56,7 +56,7 @@ public:
 
 template <typename scalar_t>
 __global__ void kernel_BN(
-    const int batch_size
+    const int batch_size,
     const scalar_t * __restrict__ src_data,
     scalar_t * dst_data
 ){
@@ -95,7 +95,7 @@ __device__ void kernel_parallel_summing(
 
     // Store the partial sum for this block in global memory
     if (tid == 0) {
-        output[blockIdx.x] = partialSum[0];
+        dst_data[blockIdx.x] = partialSum[0];
     }
     
 }
