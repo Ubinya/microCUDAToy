@@ -22,7 +22,7 @@ __global__ void kernel_parallel_sum(
     int index = blockIdx.x * blockDim.x + threadIdx.x;
 
     // Load data into shared memory
-    if (index < N) {
+    if (index < batch_size) {
         partialArr[tid] = src_data[index];
     } else {
         partialArr[tid] = 0.0f;
@@ -47,7 +47,7 @@ __global__ void kernel_sum_array(
     float *input, 
     float *output) {
 
-    __shared__ float partialArr[BLOCK_SIZE];
+    __shared__ float partialArr[MAX_GRID_SIZE];
     int tid = threadIdx.x;
     // Load data into shared memory
     partialArr[tid] = input[tid];

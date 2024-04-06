@@ -13,9 +13,9 @@ setup(
     license='MIT',
     ext_modules=[
         CUDAExtension(
-        	name='mybatchnorm',
-        	sources=['BatchNorm_kernel.cu',
-                     'BatchNorm.cpp'],
-        	extra_compile_args={'cxx':['-std=c++17', '-ffast-math'],'nvcc':['-std=c++17']})],
+        	name='my_batch_norm',
+        	sources=['BatchNorm_kernel.cu'],
+        	extra_compile_args={'cxx':['-std=c++17', '-ffast-math'],'nvcc':['-std=c++17']},
+            extra_link_args=[])],
         cmdclass={'build_ext':BuildExtension}
 	)
