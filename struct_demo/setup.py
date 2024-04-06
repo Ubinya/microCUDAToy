@@ -7,7 +7,8 @@ setup(
         CUDAExtension('hello_cuda', [
             'hello_cuda.cpp',
             'hello_cuda.cu',
-        ]),
+        ],
+        extra_link_args=[]),
     ],
     cmdclass={
         'build_ext': BuildExtension
